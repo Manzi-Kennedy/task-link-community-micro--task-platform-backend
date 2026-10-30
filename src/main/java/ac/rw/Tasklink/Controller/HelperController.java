@@ -51,9 +51,9 @@ public class HelperController {
         return new ResponseEntity<>(helpServe.getByLastName(lastName), HttpStatus.OK);
     }
 
-    @PutMapping (value = "/update")
-    public ResponseEntity<?> updateHelper(@RequestBody Helper helper) {
-        String returnedMessage = helpServe.updateHelper(helper);
+    @PutMapping (value = "/update/{id}")
+    public ResponseEntity<?> updateHelper(@PathVariable UUID id, @RequestBody Helper helper) {
+        String returnedMessage = helpServe.updateHelper(helper, id);
 
         if (returnedMessage.equals("Helper is updated successfully")) {
             return new ResponseEntity<>(returnedMessage, HttpStatus.OK);

@@ -44,16 +44,12 @@ public class HelperService {
         return helpRepo.findById(id);
     }
 
-    public List<Helper> getByFirstName(String firstName){
-        return helpRepo.findByfirstName(firstName);
-    }
-
     public List<Helper> getByLastName(String lastName){
         return helpRepo.findBylastName(lastName);
     }
 
-    public String updateHelper(Helper helper){
-        Optional<Helper> existhelp = helpRepo.findById(helper.getId());
+    public String updateHelper(Helper helper, UUID id){
+        Optional<Helper> existhelp = helpRepo.findById(id);
         if (existhelp.isEmpty()) {
             return "Helper not found";
         }
