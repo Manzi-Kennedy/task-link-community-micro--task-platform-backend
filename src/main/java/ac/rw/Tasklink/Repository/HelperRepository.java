@@ -13,5 +13,5 @@ import ac.rw.Tasklink.Domain.Helper;
 public interface HelperRepository extends JpaRepository<Helper, UUID> {
     List<Helper> findByFirstName(String firstName);
     List<Helper> findByLastName(String lastName);
-    Optional<Helper> findByFirstNameAndLastName(String firstName, String lastName);
+    Optional<Helper> findByFirstNameAndLastNameAndPhone(String firstName, String lastName, String phone);
 }

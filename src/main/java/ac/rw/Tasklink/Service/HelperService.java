@@ -26,7 +26,7 @@ public class HelperService {
 
     public String saveHelper(Helper helper) {
 
-        Optional<Helper> checkHelper = helpRepo.findByFirstNameAndLastName(helper.getFirstName(), helper.getLastName());
+        Optional<Helper> checkHelper = helpRepo.findByFirstNameAndLastNameAndPhone(helper.getFirstName(), helper.getLastName(), helper.getPhone());
         if (checkHelper.isPresent()){
             return "The Helper exists";
         }
