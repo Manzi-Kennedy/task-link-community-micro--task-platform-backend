@@ -40,8 +40,8 @@ public class SkillService {
         return skillRepo.findById(id);
     }
 
-    public String updateSkill(Skill skill){
-        Optional<Skill> existingskill = skillRepo.findById(skill.getId());
+    public String updateSkill(Skill skill, UUID id){
+        Optional<Skill> existingskill = skillRepo.findById(id);
         if (existingskill.isEmpty()) {
             return "The skill is not found";
         }

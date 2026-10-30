@@ -26,7 +26,7 @@ public class HelperService {
 
     public String saveHelper(Helper helper) {
 
-        Optional<Helper> checkHelper = helpRepo.findByfirstNameAndlastName(helper.getFirstName(), helper.getLastName());
+        Optional<Helper> checkHelper = helpRepo.findByFirstNameAndLastName(helper.getFirstName(), helper.getLastName());
         if (checkHelper.isPresent()){
             return "The Helper exists";
         }
@@ -42,10 +42,6 @@ public class HelperService {
 
     public Optional<Helper> getHelperById(UUID id){
         return helpRepo.findById(id);
-    }
-
-    public List<Helper> getByLastName(String lastName){
-        return helpRepo.findBylastName(lastName);
     }
 
     public String updateHelper(Helper helper, UUID id){
@@ -67,7 +63,7 @@ public class HelperService {
     public String deleteHelper(UUID id){
         Optional<Helper> existing = helpRepo.findById(id);
         if (existing.isEmpty()) {
-            return "THe Helper is not found";
+            return "The Helper is not found";
         }
         helpRepo.deleteById(id);
         return "The Helper is deleted successfully";

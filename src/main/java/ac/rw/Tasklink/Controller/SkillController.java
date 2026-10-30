@@ -59,8 +59,8 @@ public class SkillController {
     }
 
     @PutMapping (value = "/update/{id}")
-    public ResponseEntity<?> updateDoctor(@RequestBody Skill skill){
-        String returnedMessage = skillServe.updateSkill(skill);
+    public ResponseEntity<?> updateDoctor(@PathVariable UUID id, @RequestBody Skill skill){
+        String returnedMessage = skillServe.updateSkill(skill, id);
 
         if (returnedMessage.equals("Skill is updated successfully")) {
             return new ResponseEntity<>(returnedMessage, HttpStatus.OK);

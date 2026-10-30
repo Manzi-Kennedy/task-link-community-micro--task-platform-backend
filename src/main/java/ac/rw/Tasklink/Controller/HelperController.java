@@ -35,8 +35,13 @@ public class HelperController {
             return new ResponseEntity<>(returnedMessage, HttpStatus.CONFLICT);
         }
     }
+
+    @GetMapping(value = "/all")
+    public ResponseEntity<?> getAllHelper(){
+        return new ResponseEntity<>(helpServe.getAllHelpers(), HttpStatus.OK);
+    }
     @GetMapping (value = "/{id}")
-    public ResponseEntity<?> getHelperByFirstName(@PathVariable UUID id){
+    public ResponseEntity<?> getHelperById(@PathVariable UUID id){
          Optional<Helper> helper = helpServe.getHelperById(id);
 
         if (helper.isPresent()) {
@@ -44,11 +49,6 @@ public class HelperController {
         } else {
             return new ResponseEntity<>("Helper not found", HttpStatus.NOT_FOUND);
         }
-    }
-
-    @GetMapping (value = "/lastName/{lastName}")
-    public ResponseEntity<?> getHelperByLastName(@PathVariable String lastName) {
-        return new ResponseEntity<>(helpServe.getByLastName(lastName), HttpStatus.OK);
     }
 
     @PutMapping (value = "/update/{id}")
