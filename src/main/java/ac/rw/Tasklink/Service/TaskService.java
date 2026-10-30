@@ -32,7 +32,7 @@ public class TaskService {
         }
 
         taskRepo.save(task);
-        return "The task is saved successfully";
+        return "Task saved successfully";
     }
 
     public List<Task> getAllTasks(){
@@ -47,7 +47,7 @@ public class TaskService {
         Optional<Task> existtask = taskRepo.findById(id);
 
         if (existtask.isEmpty()){
-            return "Task not found";
+            return "The task with that id does not exist";
         }
 
         Task updatedTask = existtask.get();
@@ -58,15 +58,16 @@ public class TaskService {
         updatedTask.setTaskDate(task.getTaskDate());
         updatedTask.setPoster(task.getPoster());
         updatedTask.setHelper(task.getHelper());
-        return "Task is updated successfully";
+        taskRepo.save(updatedTask);
+        return "Task updated successfully";
     }
 
     public String deleteTask(UUID id){
         Optional<Task> existingTask = taskRepo.findById(id);
         if (existingTask.isEmpty()) {
-            return "The task is not found";
+            return "The task with that id does not exist";
         }
         taskRepo.deleteById(id);
-        return "The task is deleted successfully";
+        return "Task deleted successfully";
     }
 }

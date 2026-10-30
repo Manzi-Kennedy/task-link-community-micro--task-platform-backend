@@ -19,7 +19,7 @@ import ac.rw.Tasklink.Domain.Poster;
 import ac.rw.Tasklink.Service.PosterService;
 
 @RestController 
-@RequestMapping (value = "/api/poster")
+@RequestMapping (value = "/api/posters")
 public class PosterController {
     
     @Autowired 
@@ -28,10 +28,8 @@ public class PosterController {
     @PostMapping (value = "/save")
     public ResponseEntity<?> savePoster(@RequestBody Poster poster){
         String returnedMessage = posterServe.savePoster(poster);
-        if (returnedMessage.equals("Poster is saved successfully")) {
-            return new ResponseEntity<>(returnedMessage, HttpStatus.OK);
-        }else if (returnedMessage.equals("Poster not found")) {
-            return new ResponseEntity<>(returnedMessage, HttpStatus.NOT_FOUND);
+        if (returnedMessage.equals("Poster saved successfully")) {
+            return new ResponseEntity<>(returnedMessage, HttpStatus.CREATED);
         }else{
             return new ResponseEntity<>(returnedMessage, HttpStatus.CONFLICT);
         }
@@ -48,7 +46,7 @@ public class PosterController {
         if (poster.isPresent()) {
             return new ResponseEntity<>(poster.get(), HttpStatus.OK);
         } else {
-            return new ResponseEntity<>("Poster not found", HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>("The task with that id does not exist", HttpStatus.NOT_FOUND);
         }
     }
 
@@ -56,9 +54,9 @@ public class PosterController {
     public ResponseEntity<?> updatePoster(@PathVariable UUID id, @RequestBody Poster poster) {
         String returnedMessage = posterServe.updatePoster(poster, id);
 
-        if (returnedMessage.equals("Poster is updated successfully")) {
+        if (returnedMessage.equals("Poster updated successfully")) {
             return new ResponseEntity<>(returnedMessage, HttpStatus.OK);
-        } else if (returnedMessage.equals("Poster not found")) {
+        } else if (returnedMessage.equals("The task with that id does not exist")) {
             return new ResponseEntity<>(returnedMessage, HttpStatus.NOT_FOUND);
         } else {
             return new ResponseEntity<>(returnedMessage, HttpStatus.CONFLICT);
@@ -69,7 +67,7 @@ public class PosterController {
     public ResponseEntity<?> deletePoster(@PathVariable UUID id) {
         String returnedMessage = posterServe.deletePoster(id);
 
-        if (returnedMessage.equals("Poster is deleted successfully")) {
+        if (returnedMessage.equals("Poster deleted successfully")) {
             return new ResponseEntity<>(returnedMessage, HttpStatus.OK);
         } else {
             return new ResponseEntity<>(returnedMessage, HttpStatus.NOT_FOUND);

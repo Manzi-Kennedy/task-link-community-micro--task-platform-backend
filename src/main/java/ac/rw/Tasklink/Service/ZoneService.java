@@ -30,7 +30,7 @@ public class ZoneService {
         }
 
         zoneRepo.save(zone);
-        return "Zone is saved successfully";
+        return "Zone saved successfully";
     }
 
     public List<Zone> getAllZones(){
@@ -44,23 +44,24 @@ public class ZoneService {
     public String updateZone(Zone zone, UUID id){
         Optional<Zone> existingZone = zoneRepo.findById(id);
         if (existingZone.isEmpty()) {
-            return "Zone not found";
+            return "The task with that id does not exist";
         }
 
         Zone updatedZone = existingZone.get();
 
         updatedZone.setName(zone.getName());
         updatedZone.setZoneNumber(zone.getZoneNumber());
-        return "Zone is updated successfully";
+        zoneRepo.save(updatedZone);
+        return "Zone updated successfully";
     }
 
     public String deleteZone(UUID id){
         Optional<Zone> existzone = zoneRepo.findById(id);
         if (existzone.isEmpty()) {
-            return "Zone is not found";
+            return "The task with that id does not exist";
         }
 
         zoneRepo.deleteById(id);
-        return "The Zone is deleted successfully";
+        return "Zone deleted successfully";
     }
 }

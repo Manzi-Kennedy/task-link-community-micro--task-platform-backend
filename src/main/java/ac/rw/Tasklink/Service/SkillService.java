@@ -29,7 +29,7 @@ public class SkillService {
 
       
         skillRepo.save(skill);
-        return "The Skill is saved successfully";
+        return "Skill saved successfully";
     }
 
     public List<Skill> getAllSkills(){
@@ -43,22 +43,23 @@ public class SkillService {
     public String updateSkill(Skill skill, UUID id){
         Optional<Skill> existingskill = skillRepo.findById(id);
         if (existingskill.isEmpty()) {
-            return "The skill is not found";
+            return "The task with that id does not exist";
         }
 
         Skill updatedSkill = existingskill.get();
         
         updatedSkill.setName(skill.getName());
         updatedSkill.setHelpers(skill.getHelpers());
-        return "The skill is updated";
+        skillRepo.save(updatedSkill);
+        return "Skill updated successfully";
     }
 
     public String deleteSkill(UUID id){
         Optional<Skill> existing = skillRepo.findById(id);
         if (existing.isEmpty()) {
-            return "The skill is not found";
+            return "The task with that id does not exist";
         }
         skillRepo.deleteById(id);
-        return "The skill is deleted successfully";
+        return "Skill deleted successfully";
     }
 }

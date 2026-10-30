@@ -19,12 +19,12 @@ public class PosterService {
     public String savePoster(Poster poster){
         Optional<Poster> checkPoster = posterRepo.findByUsername(poster.getUsername());
 
-        if (checkPoster.isEmpty()) {
+        if (checkPoster.isPresent()) {
             return "The username exists";
         }
 
         posterRepo.save(poster);
-        return "The Poster is saved successfully";
+        return "Poster saved successfully";
     }
 
     public List<Poster> getAllPosters(){
@@ -38,7 +38,7 @@ public class PosterService {
     public String updatePoster(Poster poster, UUID id){
         Optional<Poster> existPoster = posterRepo.findById(id);
         if (existPoster.isEmpty()){
-            return "Poster not found";
+            return "The task with that id does not exist";
         }
 
         Poster updatedPoster = existPoster.get();
@@ -47,16 +47,17 @@ public class PosterService {
         updatedPoster.setLastName(poster.getLastName());
         updatedPoster.setUsername(poster.getUsername());
         updatedPoster.setPhone(poster.getPhone());
-        return "Poster is updated successfully";
+        posterRepo.save(updatedPoster);
+        return "Poster updated successfully";
     }
 
     public String deletePoster(UUID id){
         Optional<Poster> existingPoster = posterRepo.findById(id);
         if (existingPoster.isEmpty()) {
-            return "The poster is not found";
+            return "The task with that id does not exist";
         }
 
         posterRepo.deleteById(id);
-        return "Poster is deleted successfully";
+        return "Poster deleted successfully";
     }
 }

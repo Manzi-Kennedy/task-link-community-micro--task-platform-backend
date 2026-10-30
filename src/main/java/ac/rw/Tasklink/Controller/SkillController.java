@@ -34,10 +34,8 @@ public class SkillController {
         String returnedMessage = skillServe.saveSkill(skill);
 
         if (returnedMessage.equals("Skill saved successfully")) {
-            return new ResponseEntity<>(returnedMessage, HttpStatus.OK);
-        } else if (returnedMessage.equals("Skill not found")) {
-            return new ResponseEntity<>(returnedMessage, HttpStatus.NOT_FOUND);
-        } else {
+            return new ResponseEntity<>(returnedMessage, HttpStatus.CREATED);
+        }else {
             return new ResponseEntity<>(returnedMessage, HttpStatus.CONFLICT);
         }
     }
@@ -54,7 +52,7 @@ public class SkillController {
         if (skill.isPresent()) {
             return new ResponseEntity<>(skill.get(), HttpStatus.OK);
         }else{
-            return new ResponseEntity<>("Skill not found", HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>("The task with that id does not exist", HttpStatus.NOT_FOUND);
         }
     }
 
@@ -62,9 +60,9 @@ public class SkillController {
     public ResponseEntity<?> updateDoctor(@PathVariable UUID id, @RequestBody Skill skill){
         String returnedMessage = skillServe.updateSkill(skill, id);
 
-        if (returnedMessage.equals("Skill is updated successfully")) {
+        if (returnedMessage.equals("Skill updated successfully")) {
             return new ResponseEntity<>(returnedMessage, HttpStatus.OK);
-        }else if (returnedMessage.equals("skill not found")) {
+        }else if (returnedMessage.equals("The task with that id does not exist")) {
             return new ResponseEntity<>(returnedMessage, HttpStatus.NOT_FOUND);
         }else {
             return new ResponseEntity<>(returnedMessage, HttpStatus.CONFLICT);
@@ -74,7 +72,7 @@ public class SkillController {
         public ResponseEntity<?> deleteSkill(@PathVariable UUID id) {
             String returnedMessage = skillServe.deleteSkill(id);
 
-            if (returnedMessage.equals("Skill is deleted successfully")) {
+            if (returnedMessage.equals("Skill deleted successfully")) {
                 return new ResponseEntity<>(returnedMessage, HttpStatus.OK);
             }else {
                 return new ResponseEntity<>(returnedMessage, HttpStatus.NOT_FOUND);

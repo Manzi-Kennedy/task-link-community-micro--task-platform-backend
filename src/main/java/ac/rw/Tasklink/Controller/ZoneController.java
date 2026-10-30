@@ -19,7 +19,7 @@ import ac.rw.Tasklink.Domain.Zone;
 import ac.rw.Tasklink.Service.ZoneService;
 
 @RestController 
-@RequestMapping (value = "api/zone")
+@RequestMapping (value = "/api/zones")
 public class ZoneController {
 
     @Autowired 
@@ -28,10 +28,8 @@ public class ZoneController {
     @PostMapping (value = "/save")
     public ResponseEntity<?> saveZone(@RequestBody Zone zone){
         String returnedMessage = zoneServe.saveZone(zone);
-        if (returnedMessage.equals("Zone is saved successfully")) {
-            return new ResponseEntity<>(returnedMessage, HttpStatus.OK);
-        }else if (returnedMessage.equals("Zone not found")) {
-            return new ResponseEntity<>(returnedMessage, HttpStatus.NOT_FOUND);
+        if (returnedMessage.equals("Zone saved successfully")) {
+            return new ResponseEntity<>(returnedMessage, HttpStatus.CREATED);
         }else{
             return new ResponseEntity<>(returnedMessage, HttpStatus.CONFLICT);
         }
@@ -49,7 +47,7 @@ public class ZoneController {
         if (zone.isPresent()) {
             return new ResponseEntity<>(zone.get(), HttpStatus.OK);
         } else{
-            return new ResponseEntity<>("Helper is not found", HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>("The task with that id does not exist", HttpStatus.NOT_FOUND);
         }
     }
 
@@ -58,9 +56,9 @@ public class ZoneController {
 
         String returnedMessage = zoneServe.updateZone(zone, id);
 
-        if (returnedMessage.equals("Zone is updated successfully")) {
+        if (returnedMessage.equals("Zone updated successfully")) {
             return new ResponseEntity<>(returnedMessage, HttpStatus.OK);
-        } else if (returnedMessage.equals("Zone not found")) {
+        } else if (returnedMessage.equals("The task with that id does not exist")) {
             return new ResponseEntity<>(returnedMessage, HttpStatus.NOT_FOUND);
         } else {
             return new ResponseEntity<>(returnedMessage, HttpStatus.CONFLICT);
@@ -72,7 +70,7 @@ public class ZoneController {
 
         String returnedMessage = zoneServe.deleteZone(id);
 
-        if (returnedMessage.equals("Zone is deleted successfully")) {
+        if (returnedMessage.equals("Zone deleted successfully")) {
             return new ResponseEntity<>(returnedMessage, HttpStatus.OK);
         }else {
             return new ResponseEntity<>(returnedMessage, HttpStatus.NOT_FOUND);

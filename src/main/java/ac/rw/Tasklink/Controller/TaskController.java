@@ -21,7 +21,7 @@ import ac.rw.Tasklink.Service.PosterService;
 import ac.rw.Tasklink.Service.TaskService;
 
 @RestController 
-@RequestMapping (value = "/api/task")
+@RequestMapping (value = "/api/tasks")
 public class TaskController {
     
     @Autowired 
@@ -36,10 +36,8 @@ public class TaskController {
     @PostMapping (value = "/save")
     public ResponseEntity<?> saveTask(@RequestBody Task task){
         String returnedMessage = taskServe.saveTask(task);
-        if (returnedMessage.equals("Task is saved successfully")) {
-            return new ResponseEntity<>(returnedMessage, HttpStatus.OK);
-        }else if (returnedMessage.equals("Task not found")) {
-            return new ResponseEntity<>(returnedMessage, HttpStatus.NOT_FOUND);
+        if (returnedMessage.equals("Task saved successfully")) {
+            return new ResponseEntity<>(returnedMessage, HttpStatus.CREATED);
         }else{
             return new ResponseEntity<>(returnedMessage, HttpStatus.CONFLICT);
         }
@@ -56,7 +54,7 @@ public class TaskController {
         if (task.isPresent()) {
             return new ResponseEntity<>(task.get(), HttpStatus.OK);
         } else {
-            return new ResponseEntity<>("Task not found", HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>("The task with that id does not exist", HttpStatus.NOT_FOUND);
         }
     }
 
@@ -64,9 +62,9 @@ public class TaskController {
     public ResponseEntity<?> updateTask(@PathVariable UUID id, @RequestBody Task task) {
         String returnedMessage = taskServe.updateTask(task, id);
 
-        if (returnedMessage.equals("Task is updated successfully")) {
+        if (returnedMessage.equals("Task updated successfully")) {
             return new ResponseEntity<>(returnedMessage, HttpStatus.OK);
-        } else if (returnedMessage.equals("Task not found")) {
+        } else if (returnedMessage.equals("The task with that id does not exist")) {
             return new ResponseEntity<>(returnedMessage, HttpStatus.NOT_FOUND);
         } else {
             return new ResponseEntity<>(returnedMessage, HttpStatus.CONFLICT);
@@ -77,7 +75,7 @@ public class TaskController {
     public ResponseEntity<?> deleteHelper(@PathVariable UUID id) {
         String returnedMessage = taskServe.deleteTask(id);
 
-        if (returnedMessage.equals("Task is deleted successfully")) {
+        if (returnedMessage.equals("Task deleted successfully")) {
             return new ResponseEntity<>(returnedMessage, HttpStatus.OK);
         } else {
             return new ResponseEntity<>(returnedMessage, HttpStatus.NOT_FOUND);

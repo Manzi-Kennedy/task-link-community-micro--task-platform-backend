@@ -19,7 +19,7 @@ import ac.rw.Tasklink.Domain.Helper;
 import ac.rw.Tasklink.Service.HelperService;
 
 @RestController 
-@RequestMapping (value = "api/helper")
+@RequestMapping (value = "/api/helpers")
 public class HelperController {
     @Autowired 
     private HelperService helpServe;
@@ -27,10 +27,8 @@ public class HelperController {
     @PostMapping (value = "/save")
     public ResponseEntity<?> saveHelper(@RequestBody Helper helper){
         String returnedMessage = helpServe.saveHelper(helper);
-        if (returnedMessage.equals("Helper is saved successfully")) {
-            return new ResponseEntity<>(returnedMessage, HttpStatus.OK);
-        }else if (returnedMessage.equals("Helper not found")) {
-            return new ResponseEntity<>(returnedMessage, HttpStatus.NOT_FOUND);
+        if (returnedMessage.equals("Helper saved successfully")) {
+            return new ResponseEntity<>(returnedMessage, HttpStatus.CREATED);
         }else{
             return new ResponseEntity<>(returnedMessage, HttpStatus.CONFLICT);
         }
@@ -47,7 +45,7 @@ public class HelperController {
         if (helper.isPresent()) {
             return new ResponseEntity<>(helper.get(), HttpStatus.OK);
         } else {
-            return new ResponseEntity<>("Helper not found", HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>("The task with that id does not exist", HttpStatus.NOT_FOUND);
         }
     }
 
@@ -55,9 +53,9 @@ public class HelperController {
     public ResponseEntity<?> updateHelper(@PathVariable UUID id, @RequestBody Helper helper) {
         String returnedMessage = helpServe.updateHelper(helper, id);
 
-        if (returnedMessage.equals("Helper is updated successfully")) {
+        if (returnedMessage.equals("Helper updated successfully")) {
             return new ResponseEntity<>(returnedMessage, HttpStatus.OK);
-        } else if (returnedMessage.equals("Helper not found")) {
+        } else if (returnedMessage.equals("The task with that id does not exist")) {
             return new ResponseEntity<>(returnedMessage, HttpStatus.NOT_FOUND);
         } else {
             return new ResponseEntity<>(returnedMessage, HttpStatus.CONFLICT);
@@ -68,7 +66,7 @@ public class HelperController {
     public ResponseEntity<?> deleteHelper(@PathVariable UUID id) {
         String returnedMessage = helpServe.deleteHelper(id);
 
-        if (returnedMessage.equals("Helper is deleted successfully")) {
+        if (returnedMessage.equals("Helper deleted successfully")) {
             return new ResponseEntity<>(returnedMessage, HttpStatus.OK);
         } else {
             return new ResponseEntity<>(returnedMessage, HttpStatus.NOT_FOUND);

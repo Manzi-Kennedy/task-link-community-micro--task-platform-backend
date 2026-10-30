@@ -28,12 +28,12 @@ public class HelperService {
 
         Optional<Helper> checkHelper = helpRepo.findByFirstNameAndLastNameAndPhone(helper.getFirstName(), helper.getLastName(), helper.getPhone());
         if (checkHelper.isPresent()){
-            return "The Helper exists";
+            return "Helper already exists";
         }
 
 
         helpRepo.save(helper);
-        return "The Helper is saved successfully";
+        return "Helper saved successfully";
     }
 
     public List<Helper> getAllHelpers(){
@@ -47,7 +47,7 @@ public class HelperService {
     public String updateHelper(Helper helper, UUID id){
         Optional<Helper> existhelp = helpRepo.findById(id);
         if (existhelp.isEmpty()) {
-            return "Helper not found";
+            return "The task with that id does not exist";
         }
         Helper updatedHelper = existhelp.get();
 
@@ -57,16 +57,17 @@ public class HelperService {
         updatedHelper.setPhone(helper.getPhone());
         updatedHelper.setZone(helper.getZone());
         updatedHelper.setSkills(helper.getSkills());
-        return "Helper is updated successfully";
+        helpRepo.save(updatedHelper);
+        return "Helper updated successfully";
     }
 
     public String deleteHelper(UUID id){
         Optional<Helper> existing = helpRepo.findById(id);
         if (existing.isEmpty()) {
-            return "The Helper is not found";
+            return "The task with that id does not exist";
         }
         helpRepo.deleteById(id);
-        return "The Helper is deleted successfully";
+        return "Helper deleted successfully";
     }
 
 }
