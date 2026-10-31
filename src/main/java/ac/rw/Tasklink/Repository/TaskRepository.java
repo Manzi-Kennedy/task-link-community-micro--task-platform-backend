@@ -29,4 +29,8 @@ public interface TaskRepository extends JpaRepository<Task, UUID>{
     @Query("UPDATE Task t SET t.status = :newStatus WHERE t.helper.id = :helperId AND t.taskDate = :date AND t.status <> :doneStatus")
     int cancelTasksOfHelperOnDate(@Param("helperId") UUID helperId, @Param("date") LocalDate date, @Param("newStatus") TaskStatus newStatus, 
     @Param("doneStatus") TaskStatus doneStatus);
+
+    
+    long countByTaskDate(LocalDate taskDate);
+    long countByStatus(TaskStatus status);
 }

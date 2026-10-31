@@ -5,6 +5,10 @@ import java.util.Optional;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -131,5 +135,21 @@ public class TaskController {
     public ResponseEntity<?> cancelHelperDay(@RequestParam UUID helperId, @RequestParam String date){
         LocalDate day = LocalDate.parse(date);
         return new ResponseEntity<>(taskServe.cancelHelperDay(helperId, day), HttpStatus.OK);
+    }
+
+    //bonus 2
+    @GetMapping (value = "/page")
+    public ResponseEntity<?> getTasksPage(@RequestParam(defaultValue = "0") int page,
+                                          @RequestParam(defaultValue = "5") int size,
+                                          @RequestParam(defaultValue = "taskDate,asc") String sort){
+        String[] sortParts = sort.split(",");
+        String sortField = sortParts[0];
+        Sort.Direction direction = (sortParts.length > 1 && sortParts[1].equalsIgnoreCase("desc"))
+                ? Sort.Direction.DESC : Sort.Direction.ASC;
+
+        Pageable pageable = PageRequest.of(page, size, Sort.by(direction, sortField));
+        Page<Task> tasksPage = taskServe.getTasksPage(pageable);
+
+        return new ResponseEntity<>(tasksPage, HttpStatus.OK);
     }
 }
