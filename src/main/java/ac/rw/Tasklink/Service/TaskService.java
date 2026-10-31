@@ -1,5 +1,6 @@
 package ac.rw.Tasklink.Service;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -8,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import ac.rw.Tasklink.Domain.Task;
+import ac.rw.Tasklink.Domain.TaskStatus;
 import ac.rw.Tasklink.Repository.HelperRepository;
 import ac.rw.Tasklink.Repository.PosterRepository;
 import ac.rw.Tasklink.Repository.TaskRepository;
@@ -69,5 +71,13 @@ public class TaskService {
         }
         taskRepo.deleteById(id);
         return "Task deleted successfully";
+    }
+
+    public List<Task> getByStatus(TaskStatus status){
+        return taskRepo.findByStatusOrderByTaskDate(status);
+    }
+
+    public List<Task> getTaskBetween(LocalDate start, LocalDate end){
+        return taskRepo.findByTaskDateBetweenOrderByTaskDate(start, end);
     }
 }

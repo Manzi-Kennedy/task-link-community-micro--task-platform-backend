@@ -70,4 +70,7 @@ public class HelperService {
         return "Helper deleted successfully";
     }
 
+    private List<Helper> getHelpersBySkill(String name){
+        return helpRepo.findBySkillName(name);
+    }
 }

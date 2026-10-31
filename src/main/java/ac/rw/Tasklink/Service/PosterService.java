@@ -60,4 +60,8 @@ public class PosterService {
         posterRepo.deleteById(id);
         return "Poster deleted successfully";
     }
+
+    public List<Poster> getPosterByLastName(String lastName){
+        return posterRepo.findByLastNameIgnoreCaseOrderByFirstName(lastName);
+    }
 }

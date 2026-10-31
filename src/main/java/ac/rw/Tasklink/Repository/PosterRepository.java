@@ -1,5 +1,6 @@
 package ac.rw.Tasklink.Repository;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -11,4 +12,6 @@ import ac.rw.Tasklink.Domain.Poster;
 @Repository 
 public interface PosterRepository extends JpaRepository<Poster, UUID>{
     Optional<Poster> findByUsername(String username);
+
+    List<Poster> findByLastNameIgnoreCaseOrderByFirstName(String lastName);
 }
