@@ -11,5 +11,5 @@ import ac.rw.Tasklink.Domain.Zone;
 @Repository 
 public interface ZoneRepository extends JpaRepository<Zone, UUID>{
     
-    Optional<Zone> findByZoneNumberAndName(Integer ZoneNumber, String name);
+    Optional<Zone> findByZoneNumber(Integer ZoneNumber);
 }

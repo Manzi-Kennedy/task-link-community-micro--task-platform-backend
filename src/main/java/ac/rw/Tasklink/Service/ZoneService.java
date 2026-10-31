@@ -19,11 +19,11 @@ public class ZoneService {
 
     public String saveZone(Zone zone){
         
-        if (zone.getName() == null || zone.getZoneNumber() == 0) {
-            return "Zone name or zone number are required";
+        if (zone.getZoneNumber() == 0) {
+            return "Zone number is required";
         }
 
-        Optional<Zone> checkZone = zoneRepo.findByZoneNumberAndName(zone.getZoneNumber(), zone.getName());
+        Optional<Zone> checkZone = zoneRepo.findByZoneNumber(zone.getZoneNumber());
         
         if (checkZone.isPresent()){
             return "The zone exist";
