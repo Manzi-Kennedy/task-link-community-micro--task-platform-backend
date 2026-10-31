@@ -27,12 +27,23 @@ public class TaskService {
     public PosterRepository postRepo;
 
     public String saveTask(Task task){
+
+        if (task.getTaskDate() != null && task.getTaskDate().isBefore(LocalDate.now())) {
+            return "Task date cannot be in the past";
+        }
+
+        if (task.getHelper() != null && task.getTaskDate() != null && taskRepo.existsByHelperIdAndTaskDateAndStatusNot(
+                        task.getHelper().getId(), task.getTaskDate(), TaskStatus.CANCELLED)) {
+            return "Helper already has a task on that date";
+        }
+
         Optional<Task> checkTask = taskRepo.findByTitle(task.getTitle());
 
         if (checkTask.isPresent()) {
             return "The task exists";
         }
 
+        task.setStatus(TaskStatus.OPEN);
         taskRepo.save(task);
         return "Task saved successfully";
     }
@@ -56,7 +67,7 @@ public class TaskService {
 
         updatedTask.setTitle(task.getTitle());
         updatedTask.setLocation(task.getLocation());
-        updatedTask.setStatus(task.getStatus());
+
         updatedTask.setTaskDate(task.getTaskDate());
         updatedTask.setPoster(task.getPoster());
         updatedTask.setHelper(task.getHelper());
@@ -80,4 +91,28 @@ public class TaskService {
     public List<Task> getTaskBetween(LocalDate start, LocalDate end){
         return taskRepo.findByTaskDateBetweenOrderByTaskDate(start, end);
     }
+    
+    
+    public String updateTaskStatus(UUID id, TaskStatus newStatus){
+        Optional<Task> existTask = taskRepo.findById(id);
+
+        if (existTask.isEmpty()) {
+            return "The task with that id does not exist";
+        }
+
+        Task task = existTask.get();
+        TaskStatus current = task.getStatus();
+
+        boolean allowed =
+                (current == TaskStatus.OPEN && (newStatus == TaskStatus.CLAIMED || newStatus == TaskStatus.CANCELLED))
+             || (current == TaskStatus.CLAIMED && (newStatus == TaskStatus.DONE || newStatus == TaskStatus.CANCELLED));
+
+        if (!allowed) {
+            return "Cannot change status from " + current + " to " + newStatus;
+        }
+
+        task.setStatus(newStatus);
+        taskRepo.save(task);
+        return "Task status updated successfully";
+    }        
 }

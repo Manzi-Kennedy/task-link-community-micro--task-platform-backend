@@ -8,6 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -79,5 +80,33 @@ public class HelperController {
     public ResponseEntity<?> getHelpersBySkill(@RequestParam String name){
         return new ResponseEntity<>(helpServe.getHelpersBySkill(name), HttpStatus.OK);
     }
-    
+
+
+    //D3
+    @PutMapping (value = "/{helperId}/skills/{skillId}")
+    public ResponseEntity<?> addSkillToHelper(@PathVariable UUID helperId, @PathVariable UUID skillId){
+        String returnedMessage = helpServe.addSkillToHelper(helperId, skillId);
+
+        if (returnedMessage.equals("Skill added to the helper")) {
+            return new ResponseEntity<>(returnedMessage, HttpStatus.OK);
+        } else if (returnedMessage.equals("The helper already has that skill")) {
+            return new ResponseEntity<>(returnedMessage, HttpStatus.CONFLICT);
+        } else {
+            return new ResponseEntity<>(returnedMessage, HttpStatus.NOT_FOUND);
+        }
+    }
+
+    //D4
+    @PatchMapping (value = "/{helperId}/zone")
+    public ResponseEntity<?> changeHelperZone(@PathVariable UUID helperId, @RequestParam Integer zoneNumber){
+        String returnedMessage = helpServe.changeHelperZone(helperId, zoneNumber);
+
+        if (returnedMessage.equals("Zone changed successfully")) {
+            return new ResponseEntity<>(returnedMessage, HttpStatus.OK);
+        } else if (returnedMessage.equals("That zone is taken by another helper")) {
+            return new ResponseEntity<>(returnedMessage, HttpStatus.CONFLICT);
+        } else {
+            return new ResponseEntity<>(returnedMessage, HttpStatus.NOT_FOUND);
+        }
+    }
 }

@@ -10,6 +10,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import ac.rw.Tasklink.Domain.Helper;
+import ac.rw.Tasklink.Domain.Zone;
 
 @Repository 
 public interface HelperRepository extends JpaRepository<Helper, UUID> {
@@ -17,4 +18,6 @@ public interface HelperRepository extends JpaRepository<Helper, UUID> {
 
     @Query("SELECT DISTINCT h FROM Helper h JOIN h.skills s WHERE LOWER(s.name) = LOWER(:name)")
     List<Helper> findBySkillName(@Param ("name") String name);
+
+    boolean existsByZone(Zone zone);
 }

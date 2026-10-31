@@ -1,5 +1,6 @@
 package ac.rw.Tasklink.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -8,9 +9,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import ac.rw.Tasklink.Domain.Helper;
+import ac.rw.Tasklink.Domain.Skill;
+import ac.rw.Tasklink.Domain.Zone;
 import ac.rw.Tasklink.Repository.HelperRepository;
 import ac.rw.Tasklink.Repository.SkillRepository;
 import ac.rw.Tasklink.Repository.ZoneRepository;
+import jakarta.transaction.Transactional;
 
 @Service 
 public class HelperService {
@@ -72,5 +76,61 @@ public class HelperService {
 
     public List<Helper> getHelpersBySkill(String name){
         return helpRepo.findBySkillName(name);
+    }
+
+    @Transactional 
+    public String addSkillToHelper(UUID helperId, UUID skillId){
+        Optional<Helper> existHelper = helpRepo.findById(helperId);
+        if (existHelper.isEmpty()) {
+            return "The helper with that id does not exist";
+        }
+
+        Optional<Skill> existSkill = skillRepo.findById(skillId);
+        if (existSkill.isEmpty()) {
+            return "That skill does not exist";
+        }
+
+        Helper helper = existHelper.get();
+        Skill skill = existSkill.get();
+
+        if (helper.getSkills() == null) {
+            helper.setSkills(new ArrayList<>());
+        }
+
+        boolean alreadyHas = helper.getSkills().stream()
+                .anyMatch(s -> s.getId().equals(skill.getId()));
+
+        if (alreadyHas) {
+            return "The helper already has that skill";
+        }
+
+        helper.getSkills().add(skill);
+        helpRepo.save(helper);
+        return "Skill added to the helper";
+    }
+
+        public String changeHelperZone(UUID helperId, Integer zoneNumber){
+        Optional<Helper> existHelper = helpRepo.findById(helperId);
+        if (existHelper.isEmpty()) {
+            return "The helper with that id does not exist";
+        }
+
+        Optional<Zone> existZone = zoneRepo.findByZoneNumber(zoneNumber);
+        if (existZone.isEmpty()) {
+            return "The zone with that zoneNumber does not exist";
+        }
+
+        Helper helper = existHelper.get();
+        Zone zone = existZone.get();
+
+        boolean alreadyInThatZone = helper.getZone() != null && helper.getZone().getId().equals(zone.getId());
+
+        if (!alreadyInThatZone && helpRepo.existsByZone(zone)) {
+            return "That zone is taken by another helper";
+        }
+
+        helper.setZone(zone);
+        helpRepo.save(helper);
+        return "Zone changed successfully";
     }
 }

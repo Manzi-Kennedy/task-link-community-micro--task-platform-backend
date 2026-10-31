@@ -17,4 +17,6 @@ public interface TaskRepository extends JpaRepository<Task, UUID>{
 
     List<Task> findByStatusOrderByTaskDate(TaskStatus status);
     List<Task> findByTaskDateBetweenOrderByTaskDate(LocalDate start, LocalDate end);
+
+    boolean existsByHelperIdAndTaskDateAndStatusNot(UUID helperId, LocalDate taskDate, TaskStatus status);
 }
