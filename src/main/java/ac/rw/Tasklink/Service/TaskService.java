@@ -12,6 +12,7 @@ import ac.rw.Tasklink.Domain.Task;
 import ac.rw.Tasklink.Domain.TaskStatus;
 import ac.rw.Tasklink.Repository.HelperRepository;
 import ac.rw.Tasklink.Repository.PosterRepository;
+import ac.rw.Tasklink.Repository.RatingRepository;
 import ac.rw.Tasklink.Repository.TaskRepository;
 
 @Service 
@@ -25,6 +26,9 @@ public class TaskService {
 
     @Autowired 
     public PosterRepository postRepo;
+
+    @Autowired
+    public RatingRepository rateRepo;
 
     public String saveTask(Task task){
 
@@ -75,11 +79,16 @@ public class TaskService {
         return "Task updated successfully";
     }
 
-    public String deleteTask(UUID id){
+        public String deleteTask(UUID id){
         Optional<Task> existingTask = taskRepo.findById(id);
         if (existingTask.isEmpty()) {
             return "The task with that id does not exist";
         }
+
+        if (rateRepo.existsByTask(existingTask.get())) {
+            return "That task has ratings, delete them first";
+        }
+
         taskRepo.deleteById(id);
         return "Task deleted successfully";
     }

@@ -84,6 +84,8 @@ public class TaskController {
 
         if (returnedMessage.equals("Task deleted successfully")) {
             return new ResponseEntity<>(returnedMessage, HttpStatus.OK);
+        } else if (returnedMessage.equals("That task has ratings, delete them first")) {
+            return new ResponseEntity<>(returnedMessage, HttpStatus.CONFLICT);
         } else {
             return new ResponseEntity<>(returnedMessage, HttpStatus.NOT_FOUND);
         }
