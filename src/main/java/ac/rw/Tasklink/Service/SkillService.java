@@ -62,4 +62,8 @@ public class SkillService {
         skillRepo.deleteById(id);
         return "Skill deleted successfully";
     }
+
+    public List<Skill> getUnusedSkills(){
+        return skillRepo.findByUnusedSkills();
+    }
 }

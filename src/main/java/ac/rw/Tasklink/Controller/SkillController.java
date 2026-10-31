@@ -78,4 +78,10 @@ public class SkillController {
                 return new ResponseEntity<>(returnedMessage, HttpStatus.NOT_FOUND);
             }
         }
+
+        //C3
+        @GetMapping(value = "/unused")
+        public ResponseEntity<?> getUnusedSkills(){
+            return new ResponseEntity<>(skillServe.getUnusedSkills(), HttpStatus.OK);
+        }
 }

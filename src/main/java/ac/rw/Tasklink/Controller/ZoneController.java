@@ -76,4 +76,10 @@ public class ZoneController {
             return new ResponseEntity<>(returnedMessage, HttpStatus.NOT_FOUND);
         }
     }
+
+    //C2
+    @GetMapping (value = "/free")
+    public ResponseEntity<?> getFreeZones(){
+        return new ResponseEntity<>(zoneServe.getFreeZones(), HttpStatus.OK);
+    }
 }

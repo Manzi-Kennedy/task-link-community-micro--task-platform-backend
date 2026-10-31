@@ -16,7 +16,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import ac.rw.Tasklink.Domain.Helper;
 import ac.rw.Tasklink.Domain.Poster;
+import ac.rw.Tasklink.Service.HelperService;
 import ac.rw.Tasklink.Service.PosterService;
 
 @RestController 
@@ -25,6 +27,9 @@ public class PosterController {
     
     @Autowired 
     private PosterService posterServe;
+
+    @Autowired 
+    private HelperService helperServe;
 
     @PostMapping (value = "/save")
     public ResponseEntity<?> savePoster(@RequestBody Poster poster){
@@ -79,5 +84,17 @@ public class PosterController {
     @GetMapping (value = "/by-last-name")
     public ResponseEntity<?> getPosterByLastName(@RequestParam String lastName){
         return new ResponseEntity<>(posterServe.getPosterByLastName(lastName), HttpStatus.OK);
+    }
+
+    //C4
+    @GetMapping (value = "of-helper/{helperId}")
+    public ResponseEntity<?> getPosterOfHelper(@PathVariable UUID helperId){
+        Optional<Helper> helper =  helperServe.getHelperById(helperId);
+
+        if (helper.isEmpty()) {
+            return new ResponseEntity<>("The helper with that id doesnot exist", HttpStatus.NOT_FOUND);
+        }
+
+        return new ResponseEntity<>(posterServe.getPostersOfHelper(helperId), HttpStatus.OK);
     }
 }

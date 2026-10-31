@@ -15,6 +15,6 @@ import ac.rw.Tasklink.Domain.Helper;
 public interface HelperRepository extends JpaRepository<Helper, UUID> {
     Optional<Helper> findByFirstNameAndLastNameAndPhone(String firstName, String lastName, String phone);
 
-    @Query ("SELECT DISTINCT h FROM Helper h JOIN h.skills s WHERE LOWER(s.name) = LOWER(:name")
+    @Query("SELECT DISTINCT h FROM Helper h JOIN h.skills s WHERE LOWER(s.name) = LOWER(:name)")
     List<Helper> findBySkillName(@Param ("name") String name);
 }

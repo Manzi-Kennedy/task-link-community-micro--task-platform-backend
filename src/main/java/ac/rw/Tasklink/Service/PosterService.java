@@ -64,4 +64,8 @@ public class PosterService {
     public List<Poster> getPosterByLastName(String lastName){
         return posterRepo.findByLastNameIgnoreCaseOrderByFirstName(lastName);
     }
+
+        public List<Poster> getPostersOfHelper(UUID helperId){
+        return posterRepo.findPostersByHelper(helperId);
+    }
 }
