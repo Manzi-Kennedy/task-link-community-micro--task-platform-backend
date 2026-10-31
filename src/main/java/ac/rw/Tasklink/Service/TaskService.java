@@ -14,6 +14,7 @@ import ac.rw.Tasklink.Repository.HelperRepository;
 import ac.rw.Tasklink.Repository.PosterRepository;
 import ac.rw.Tasklink.Repository.RatingRepository;
 import ac.rw.Tasklink.Repository.TaskRepository;
+import jakarta.transaction.Transactional;
 
 @Service 
 public class TaskService {
@@ -124,4 +125,14 @@ public class TaskService {
         taskRepo.save(task);
         return "Task status updated successfully";
     }        
+
+    public List<Object[]> getTaskCountByStatus(){
+        return taskRepo.countTasksByStatus();
+    }
+
+    @Transactional 
+    public String cancelHelperDay(UUID helperId, LocalDate date){
+        int updated = taskRepo.cancelTasksOfHelperOnDate(helperId, date, TaskStatus.CANCELLED, TaskStatus.DONE);
+        return updated + " tasks cancelled";
+    }
 }

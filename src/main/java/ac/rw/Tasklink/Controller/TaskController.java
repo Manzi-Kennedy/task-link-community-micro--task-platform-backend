@@ -117,5 +117,19 @@ public class TaskController {
         } else {
             return new ResponseEntity<>(returnedMessage, HttpStatus.BAD_REQUEST);
         }
+    
+    }
+
+    //F1
+    @GetMapping (value = "/stats/by-status")
+    public ResponseEntity<?> getTaskCountByStatus(){
+        return new ResponseEntity<>(taskServe.getTaskCountByStatus(), HttpStatus.OK);
+    }
+
+    //F2
+    @PatchMapping (value = "/cancel-day")
+    public ResponseEntity<?> cancelHelperDay(@RequestParam UUID helperId, @RequestParam String date){
+        LocalDate day = LocalDate.parse(date);
+        return new ResponseEntity<>(taskServe.cancelHelperDay(helperId, day), HttpStatus.OK);
     }
 }
