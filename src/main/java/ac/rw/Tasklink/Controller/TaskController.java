@@ -24,8 +24,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import ac.rw.Tasklink.Domain.Task;
 import ac.rw.Tasklink.Domain.TaskStatus;
-import ac.rw.Tasklink.Service.HelperService;
-import ac.rw.Tasklink.Service.PosterService;
 import ac.rw.Tasklink.Service.TaskService;
 
 @RestController 
@@ -35,11 +33,6 @@ public class TaskController {
     @Autowired 
     private TaskService taskServe;
 
-    @Autowired 
-    private HelperService HelpServe;
-
-    @Autowired 
-    private PosterService postServe;
 
     @PostMapping (value = "/save")
     public ResponseEntity<?> saveTask(@RequestBody Task task){

@@ -8,7 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import ac.rw.Tasklink.Domain.Skill;
-import ac.rw.Tasklink.Repository.HelperRepository;
 import ac.rw.Tasklink.Repository.SkillRepository;
 
 @Service 
@@ -18,8 +17,6 @@ public class SkillService {
     @Autowired 
     private SkillRepository skillRepo;
 
-    @Autowired 
-    private HelperRepository helpRepo;
 
     public String saveSkill(Skill skill){
         Optional<Skill> checkSkill = skillRepo.findByName(skill.getName());

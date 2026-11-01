@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import ac.rw.Tasklink.Domain.Skill;
-import ac.rw.Tasklink.Service.HelperService;
 import ac.rw.Tasklink.Service.SkillService;
 
 @RestController 
@@ -26,8 +25,6 @@ public class SkillController {
     @Autowired 
     private SkillService skillServe;
 
-    @Autowired 
-    private HelperService helperServe;
 
     @PostMapping (value = "/save")
     public ResponseEntity<?> saveSkill(@RequestBody Skill skill){
